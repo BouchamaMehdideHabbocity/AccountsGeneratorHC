@@ -86,8 +86,7 @@
 ## Attention
 
 ```
-[!] Pas de rotation IP = risque ban apres 5-10 comptes
-[!] Delai entre comptes : 5s par defaut (augmenter pour plus de secu)
+[!] utilise un proxy de preference
 [!] Couts : ~$0.002/mail + ~$0.003/captcha par compte
 ```
 
