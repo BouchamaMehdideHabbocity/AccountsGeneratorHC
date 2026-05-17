@@ -556,27 +556,20 @@
   }
 
   async function loginAccount(pseudo, password) {
-    if (location.pathname.includes("verify") || location.pathname.includes("hotel")) {
-      window.location.href = "https://habbocity.fr/";
-      return;
+    log(`Login: ${pseudo}...`);
+    const fd = new FormData();
+    fd.append("username", pseudo);
+    fd.append("password", password);
+    const res = await fetch("/app/action/website/login/ActionLogin.php", {
+      method: "POST",
+      body: fd,
+      credentials: "same-origin",
+    }).then((r) => r.json());
+    log("Login response: " + (res.response || JSON.stringify(res)));
+    if (res.success) {
+      window.location.href = "https://habbocity.fr/hotel";
     }
-    const loginBtn = [...document.querySelectorAll("a,button,div,.btn")]
-      .find((b) => /se connecter|connexion/i.test(b.textContent?.trim()));
-    if (loginBtn) { loginBtn.click(); await sleep(800); }
-
-    const pseudoInput = document.querySelector('input[placeholder="Pseudonyme"]') ||
-      document.querySelector('input[name="username"]');
-    const pwdInput = document.querySelector('input[placeholder="Mot de passe"]') ||
-      document.querySelector('input[name="password"]');
-    if (pseudoInput) setVal(pseudoInput, pseudo);
-    if (pwdInput) setVal(pwdInput, password);
-
-    await sleep(300);
-    const submitBtn = document.querySelector('#loginBtn') ||
-      [...document.querySelectorAll("button,input[type=submit]")]
-        .find((b) => /connexion|se connecter|login/i.test(b.textContent?.trim() || b.value));
-    if (submitBtn) submitBtn.click();
-    log(`Login: ${pseudo}`);
+    return res;
   }
 
   function saveAccount(a) {
